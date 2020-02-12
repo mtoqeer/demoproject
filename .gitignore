@@ -24,4 +24,4 @@ package-lock.json
 coverage
 
 # Benchmarking
-benchmarks/graphs
+benchmarks/graphssendgrid.env

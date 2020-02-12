@@ -1,24 +1,27 @@
 import { SUBMIT_FORM, FORM_ERROS } from "./types";
+import axios from "axios";
 
-export const submitForm = data => async dispatch => {
+export const submitForm = newformdata => async dispatch => {
+  const config = {
+    header: {
+      "Content-Type": "application/json"
+    }
+  };
   try {
-    const res = await fetch("api/form", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const data = await res.json();
+    const res = await axios.post(
+      "http://localhost:5000/api/form",
+      newformdata,
+      config
+    );
 
     dispatch({
       type: SUBMIT_FORM,
-      payload: data
+      payload: res.data
     });
   } catch (err) {
     dispatch({
       type: FORM_ERROS,
-      payload: err.response.data
+      payload: err.response.msg
     });
   }
 };

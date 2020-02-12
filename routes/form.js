@@ -17,13 +17,28 @@ router.post(
       .not()
       .isEmpty()
   ],
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const { name, email, telephone, subject, message } = req.body;
 
-    res.send("passed");
+    try {
+      const newFormData = new Form({
+        name,
+        email,
+        telephone,
+        subject,
+        message
+      });
+
+      const form = await newFormData.save();
+
+      res.json(form);
+    } catch (e) {
+      res.status(500).json({ msg: "Server Error" });
+    }
   }
 );
 

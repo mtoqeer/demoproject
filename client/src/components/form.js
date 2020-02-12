@@ -1,54 +1,111 @@
-import React from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Toast from "react-bootstrap/Toast";
+import ToastBody from "react-bootstrap/ToastBody";
+import { connect } from "react-redux";
+import { submitForm } from "../actions/formActions";
 
-const Form = () => {
+const Form = ({ submitForm }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [toastSow, setToastShow] = useState(false);
+
+  const onSubmit = () => {
+    if (name === "" || email === "") {
+      setToastShow(true);
+      setTimeout(function() {
+        setToastShow(false);
+      }, 3000);
+    } else {
+      const newFormData = {
+        name,
+        email,
+        telephone,
+        subject,
+        message
+      };
+
+      submitForm(newFormData);
+
+      // Clear Fields
+      setName("");
+      setEmail("");
+      setTelephone("");
+      setSubject("");
+      setMessage("");
+    }
+  };
+
   return (
     <div className="container">
       <div className="row mt-5">
         <div className="col-lg-6 offset-md-3">
-          <form action="">
+          <Toast show={toastSow}>
+            <ToastBody>Please Fill out the name or email</ToastBody>
+          </Toast>
+          <form>
             <div className="form-group">
               <input
                 type="text"
+                name="name"
                 className="form-control"
-                id="name"
+                value={name}
+                onChange={e => setName(e.target.value)}
                 placeholder="Name"
               />
             </div>
             <div className="form-group">
               <input
                 type="email"
+                name="email"
                 className="form-control"
-                id="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="Email"
               />
             </div>
             <div className="form-group">
               <input
                 type="tel"
+                name="telephone"
                 className="form-control"
-                id="tel"
+                value={telephone}
+                onChange={e => setTelephone(e.target.value)}
                 placeholder="Telephone"
               />
             </div>
             <div className="form-group">
               <input
                 type="text"
+                name="subject"
                 className="form-control"
-                id="subject"
+                value={subject}
+                onChange={e => setSubject(e.target.value)}
                 placeholder="Subject"
               />
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <textarea
-                class="form-control"
-                id="message"
+                className="form-control"
+                name="message"
+                value={message}
+                onChange={e => setMessage(e.target.value)}
                 rows="3"
                 placeholder="Message"
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">
+
+            <a
+              href="#!"
+              onClick={onSubmit}
+              type="submit"
+              className="btn btn-primary"
+            >
               Submit
-            </button>
+            </a>
           </form>
         </div>
       </div>
@@ -56,4 +113,8 @@ const Form = () => {
   );
 };
 
-export default Form;
+Form.propTypes = {
+  submitForm: PropTypes.func.isRequired
+};
+
+export default connect(null, { submitForm })(Form);
