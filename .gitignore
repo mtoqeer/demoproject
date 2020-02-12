@@ -25,3 +25,4 @@ coverage
 
 # Benchmarking
 benchmarks/graphssendgrid.env
+sendgrid.env
