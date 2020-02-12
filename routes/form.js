@@ -17,15 +17,13 @@ router.post(
       .not()
       .isEmpty()
   ],
+
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     const { name, email, telephone, subject, message } = req.body;
-    sgMail.setApiKey(
-      "SG.IF8NIhtoQ_uU95gy920mPA.BMgjoPukHg3z23F2v0ozm9u-Bikj2cOW2v2b2H-ktbo"
-    );
     try {
       const newFormData = new Form({
         name,
