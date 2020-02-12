@@ -12,6 +12,7 @@ const Form = ({ submitForm }) => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [toastSow, setToastShow] = useState(false);
+  const [successShow, setSuccessShow] = useState(false);
 
   const onSubmit = () => {
     if (name === "" || email === "") {
@@ -29,7 +30,10 @@ const Form = ({ submitForm }) => {
       };
 
       submitForm(newFormData);
-
+      setSuccessShow(true);
+      setTimeout(function() {
+        setSuccessShow(false);
+      }, 3000);
       // Clear Fields
       setName("");
       setEmail("");
@@ -45,6 +49,9 @@ const Form = ({ submitForm }) => {
         <div className="col-lg-6 offset-md-3">
           <Toast show={toastSow}>
             <ToastBody>Please Fill out the name or email</ToastBody>
+          </Toast>
+          <Toast show={successShow}>
+            <ToastBody>Form Has Been Submitted Succssfully!</ToastBody>
           </Toast>
           <form>
             <div className="form-group">
